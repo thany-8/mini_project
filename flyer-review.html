@@ -4,29 +4,58 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hermanos Tatis — Déjanos tu reseña</title>
-<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Flyer con código QR para dejar tu reseña en Google del Restaurante Hermanos Tatis, Manzanillo del Mar, Cartagena.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root{
     --deep:#0B4A4E;
     --deep-2:#0F3B3D;
+    --ink:#08292b;
     --sand:#F2E6C9;
     --turq:#2FA8A3;
     --coral:#E4603F;
     --sun:#F2C94C;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   body{
     min-height:100vh;
     display:flex; align-items:center; justify-content:center;
-    background:#08292b;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #12595d 0%, transparent 60%),
+      var(--ink);
     font-family:'Barlow Condensed', sans-serif;
+    padding:28px;
   }
+
+  /* ---------- Toolbar (screen only) ---------- */
+  .toolbar{
+    position:fixed; top:18px; right:18px; z-index:50;
+    display:flex; gap:10px;
+  }
+  .btn{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    font-size:15px; color:var(--deep);
+    background:var(--sun);
+    border:none; border-radius:999px;
+    padding:11px 20px; cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(0,0,0,.4); }
+
+  /* ---------- Flyer ---------- */
   .flyer{
     width:720px;
-    height:1020px;
+    min-height:1020px;
     max-width:100%;
-    background:radial-gradient(ellipse at 50% 0%, #12595d, var(--deep) 65%);
+    background:
+      radial-gradient(ellipse at 50% 0%, #12595d, var(--deep) 62%),
+      var(--deep);
     position:relative;
     overflow:hidden;
     color:var(--sand);
@@ -34,93 +63,195 @@
     flex-direction:column;
     align-items:center;
     text-align:center;
-    padding:70px 50px 50px;
+    padding:64px 54px 132px;
+    border-radius:10px;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
   }
+  /* vignette */
+  .flyer::after{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(120% 80% at 50% 0%, transparent 55%, rgba(0,0,0,.28) 100%);
+  }
+  .content-layer{ position:relative; z-index:3; display:flex; flex-direction:column; align-items:center; width:100%; }
+
+  /* bubbles */
+  .bubble{ position:absolute; z-index:2; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.5), rgba(47,168,163,.15));
+    opacity:.5; }
 
   .ring{
-    width:150px; height:150px; border-radius:50%;
+    width:126px; height:126px; border-radius:50%;
     border:4px dashed var(--coral);
     display:flex; align-items:center; justify-content:center;
-    margin-bottom:34px;
+    margin-bottom:24px; position:relative;
+    background:rgba(255,255,255,.04);
   }
-  .ring svg{ width:96px; height:96px; }
+  .ring svg{ width:88px; height:88px; }
 
   .eyebrow{
     font-weight:700; letter-spacing:5px; text-transform:uppercase;
-    color:var(--turq); font-size:18px; margin-bottom:14px;
+    color:var(--turq); font-size:17px; margin-bottom:12px;
   }
   h1{
     font-family:'Alfa Slab One', serif;
-    font-size:76px;
+    font-size:70px;
     line-height:0.95;
     color:var(--sand);
     text-shadow:5px 5px 0 var(--coral);
-    margin-bottom:8px;
+    margin-bottom:10px;
   }
   .location{
     font-weight:600; letter-spacing:2px; text-transform:uppercase;
-    color:rgba(242,230,201,0.7); font-size:16px; margin-bottom:50px;
+    color:rgba(242,230,201,.72); font-size:15px; margin-bottom:22px;
   }
+
+  .divider{ display:flex; align-items:center; gap:10px; font-size:18px; margin-bottom:22px; }
+  .divider span{ height:2px; width:52px; background:linear-gradient(90deg,transparent,var(--turq)); }
+  .divider span:last-child{ background:linear-gradient(90deg,var(--turq),transparent); }
 
   .cta{
     font-family:'Alfa Slab One', serif;
-    font-size:34px;
+    font-size:33px;
     color:var(--sun);
     margin-bottom:8px;
   }
   .sub{
-    font-size:20px;
-    color:rgba(242,230,201,0.85);
-    max-width:420px;
-    margin-bottom:34px;
+    font-size:19px;
+    color:rgba(242,230,201,.88);
+    max-width:430px;
+    margin-bottom:24px;
   }
 
+  /* QR */
+  .qr-wrap{ position:relative; padding:16px; margin-bottom:14px; }
   .qr-card{
     background:var(--sand);
     border-radius:16px;
-    padding:24px;
-    box-shadow:0 20px 44px rgba(0,0,0,0.4);
+    padding:22px 22px 16px;
+    box-shadow:0 20px 44px rgba(0,0,0,.42);
   }
   .qr-card #qrcode{ display:flex; }
+  .qr-card #qrcode canvas{ display:block; border-radius:6px; }
+  .qr-hint{ margin-top:12px; color:var(--deep); font-weight:700; letter-spacing:.5px; font-size:15px; text-transform:uppercase; }
+  .corner{ position:absolute; width:26px; height:26px; border:4px solid var(--coral); }
+  .corner.tl{ top:0; left:0; border-right:0; border-bottom:0; border-top-left-radius:8px; }
+  .corner.tr{ top:0; right:0; border-left:0; border-bottom:0; border-top-right-radius:8px; }
+  .corner.bl{ bottom:0; left:0; border-right:0; border-top:0; border-bottom-left-radius:8px; }
+  .corner.br{ bottom:0; right:0; border-left:0; border-top:0; border-bottom-right-radius:8px; }
 
-  .stars{
-    margin-top:36px;
-    color:var(--sun);
-    font-size:30px;
-    letter-spacing:6px;
+  /* steps */
+  .steps{ display:flex; align-items:center; justify-content:center; gap:12px; margin:6px 0 22px; }
+  .step{ display:flex; flex-direction:column; align-items:center; gap:8px; width:98px; }
+  .step-ic{ width:52px; height:52px; border-radius:50%; background:rgba(47,168,163,.18);
+    border:2px solid var(--turq); display:flex; align-items:center; justify-content:center; }
+  .step-ic svg{ width:26px; height:26px; }
+  .step-tx{ font-weight:700; text-transform:uppercase; letter-spacing:1px; font-size:14px; color:var(--sand); }
+  .step-arrow{ color:var(--coral); font-size:26px; font-weight:700; line-height:1; }
+
+  .stars{ color:var(--sun); font-size:30px; letter-spacing:6px; margin-bottom:8px; }
+  .foot{ font-weight:600; letter-spacing:2px; text-transform:uppercase; font-size:13px; color:rgba(242,230,201,.6); }
+
+  /* waves */
+  .waves{ position:absolute; bottom:0; left:0; width:100%; line-height:0; z-index:2; }
+  .waves svg{ width:100%; display:block; }
+
+  /* animations (screen) */
+  @keyframes floaty{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-7px) } }
+  @keyframes rise{ 0%{ transform:translateY(0); opacity:0 } 12%{opacity:.6} 100%{ transform:translateY(-170px); opacity:0 } }
+  @keyframes twinkle{ 0%,100%{ opacity:1 } 50%{ opacity:.55 } }
+  .qr-wrap{ animation:floaty 5s ease-in-out infinite; }
+  .stars{ animation:twinkle 2.6s ease-in-out infinite; }
+  .bubble{ animation:rise linear infinite; }
+
+  @media (prefers-reduced-motion: reduce){
+    .qr-wrap,.stars,.bubble{ animation:none !important; }
   }
 
-  .waves{ position:absolute; bottom:0; left:0; width:100%; line-height:0; z-index:0; }
-  .waves svg{ width:100%; display:block; }
-  .content-layer{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; }
+  /* ---------- Print ---------- */
+  @media print{
+    @page{ size:A4; margin:10mm; }
+    body{ background:#fff; padding:0; display:block; }
+    .toolbar{ display:none !important; }
+    .flyer{ box-shadow:none; border-radius:0; margin:0 auto; }
+    .qr-wrap,.stars,.bubble{ animation:none !important; }
+  }
 </style>
 </head>
 <body>
 
+<div class="toolbar">
+  <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+</div>
+
 <main class="flyer">
+  <!-- decorative bubbles -->
+  <span class="bubble" style="left:8%;  bottom:16%; width:16px; height:16px; animation-duration:9s;"></span>
+  <span class="bubble" style="left:16%; bottom:10%; width:10px; height:10px; animation-duration:7s;  animation-delay:1.5s;"></span>
+  <span class="bubble" style="right:12%; bottom:20%; width:22px; height:22px; animation-duration:11s; animation-delay:.8s;"></span>
+  <span class="bubble" style="right:20%; bottom:12%; width:12px; height:12px; animation-duration:8s;  animation-delay:2.2s;"></span>
+
   <div class="content-layer">
     <div class="ring" aria-hidden="true">
-      <svg viewBox="0 0 100 100"><circle cx="50" cy="33" r="10" fill="#F2C94C"/><path d="M18,58 C30,48 70,48 82,58 L82,85 C70,93 30,93 18,85 Z" fill="#2FA8A3"/></svg>
+      <!-- fish emblem -->
+      <svg viewBox="0 0 100 100">
+        <path d="M14 50 C28 28, 60 28, 74 50 C60 72, 28 72, 14 50 Z" fill="var(--turq)"/>
+        <path d="M72 50 L92 36 L87 50 L92 64 Z" fill="var(--coral)"/>
+        <circle cx="34" cy="46" r="4.5" fill="var(--deep)"/>
+        <path d="M40 50 C48 42, 60 42, 66 50 C60 58, 48 58, 40 50 Z" fill="var(--sand)" opacity=".25"/>
+        <path d="M20 62 q6 6 12 0" stroke="var(--sun)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
     </div>
 
     <p class="eyebrow">Manzanillo del Mar &middot; Cartagena</p>
     <h1>Hermanos<br>Tatis</h1>
     <p class="location">Restaurante frente al mar</p>
 
-    <p class="cta">¡Déjanos tu reseña!</p>
-    <p class="sub">Escanea el código con la cámara de tu celular para calificarnos en Google.</p>
+    <div class="divider" aria-hidden="true"><span></span>🐚<span></span></div>
 
-    <div class="qr-card">
-      <div id="qrcode"></div>
+    <p class="cta">¡Déjanos tu reseña!</p>
+    <p class="sub">Escanea el código con la cámara de tu celular y califícanos en Google. ¡Solo toma 20 segundos!</p>
+
+    <div class="qr-wrap">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="qr-card">
+        <div id="qrcode"></div>
+        <p class="qr-hint">📷 Apunta tu cámara aquí</p>
+      </div>
+    </div>
+
+    <div class="steps" aria-hidden="true">
+      <div class="step">
+        <span class="step-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--turq)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6l1.5-2h5L16 6"/><circle cx="12" cy="13" r="3.2"/></svg>
+        </span>
+        <span class="step-tx">Escanea</span>
+      </div>
+      <span class="step-arrow">→</span>
+      <div class="step">
+        <span class="step-ic">
+          <svg viewBox="0 0 24 24" fill="var(--sun)" stroke="var(--sun)" stroke-width="1.5" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.2l1-5.8L3.5 9.2l5.9-.9z"/></svg>
+        </span>
+        <span class="step-tx">Califícanos</span>
+      </div>
+      <span class="step-arrow">→</span>
+      <div class="step">
+        <span class="step-ic">
+          <svg viewBox="0 0 24 24" fill="var(--coral)" stroke="var(--coral)" stroke-width="1.5" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.3-8.3C1 8.5 2.6 5.5 5.6 5.5c1.9 0 3.2 1.1 4.4 2.6 1.2-1.5 2.5-2.6 4.4-2.6 3 0 4.6 3 2.9 6.2C19 15.6 12 20 12 20z"/></svg>
+        </span>
+        <span class="step-tx">¡Gracias!</span>
+      </div>
     </div>
 
     <p class="stars" aria-hidden="true">★★★★★</p>
+    <p class="foot">Tu opinión nos ayuda a seguir creciendo</p>
   </div>
 
   <div class="waves" aria-hidden="true">
-    <svg viewBox="0 0 720 100" preserveAspectRatio="none">
-      <path d="M0,55 Q60,30 120,55 T240,55 T360,55 T480,55 T600,55 T720,55 V100 H0 Z" fill="#2FA8A3" opacity="0.5"/>
-      <path d="M0,75 Q60,55 120,75 T240,75 T360,75 T480,75 T600,75 T720,75 V100 H0 Z" fill="#0F3B3D"/>
+    <svg viewBox="0 0 720 120" preserveAspectRatio="none">
+      <path d="M0,60 Q60,32 120,60 T240,60 T360,60 T480,60 T600,60 T720,60 V120 H0 Z" fill="var(--turq)" opacity="0.45"/>
+      <path d="M0,78 Q60,52 120,78 T240,78 T360,78 T480,78 T600,78 T720,78 V120 H0 Z" fill="#12595d" opacity="0.7"/>
+      <path d="M0,92 Q60,70 120,92 T240,92 T360,92 T480,92 T600,92 T720,92 V120 H0 Z" fill="var(--deep-2)"/>
     </svg>
   </div>
 </main>
@@ -134,8 +265,8 @@
 
   new QRCode(document.getElementById("qrcode"), {
     text: REVIEW_URL,
-    width: 200,
-    height: 200,
+    width: 196,
+    height: 196,
     colorDark: "#0B4A4E",
     colorLight: "#F2E6C9",
     correctLevel: QRCode.CorrectLevel.H
