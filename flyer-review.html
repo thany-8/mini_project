@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermanos Tatis — Déjanos tu reseña</title>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --deep:#0B4A4E;
+    --deep-2:#0F3B3D;
+    --sand:#F2E6C9;
+    --turq:#2FA8A3;
+    --coral:#E4603F;
+    --sun:#F2C94C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    background:#08292b;
+    font-family:'Barlow Condensed', sans-serif;
+  }
+  .flyer{
+    width:720px;
+    height:1020px;
+    max-width:100%;
+    background:radial-gradient(ellipse at 50% 0%, #12595d, var(--deep) 65%);
+    position:relative;
+    overflow:hidden;
+    color:var(--sand);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:70px 50px 50px;
+  }
+
+  .ring{
+    width:150px; height:150px; border-radius:50%;
+    border:4px dashed var(--coral);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:34px;
+  }
+  .ring svg{ width:96px; height:96px; }
+
+  .eyebrow{
+    font-weight:700; letter-spacing:5px; text-transform:uppercase;
+    color:var(--turq); font-size:18px; margin-bottom:14px;
+  }
+  h1{
+    font-family:'Alfa Slab One', serif;
+    font-size:76px;
+    line-height:0.95;
+    color:var(--sand);
+    text-shadow:5px 5px 0 var(--coral);
+    margin-bottom:8px;
+  }
+  .location{
+    font-weight:600; letter-spacing:2px; text-transform:uppercase;
+    color:rgba(242,230,201,0.7); font-size:16px; margin-bottom:50px;
+  }
+
+  .cta{
+    font-family:'Alfa Slab One', serif;
+    font-size:34px;
+    color:var(--sun);
+    margin-bottom:8px;
+  }
+  .sub{
+    font-size:20px;
+    color:rgba(242,230,201,0.85);
+    max-width:420px;
+    margin-bottom:34px;
+  }
+
+  .qr-card{
+    background:var(--sand);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 20px 44px rgba(0,0,0,0.4);
+  }
+  .qr-card #qrcode{ display:flex; }
+
+  .stars{
+    margin-top:36px;
+    color:var(--sun);
+    font-size:30px;
+    letter-spacing:6px;
+  }
+
+  .waves{ position:absolute; bottom:0; left:0; width:100%; line-height:0; z-index:0; }
+  .waves svg{ width:100%; display:block; }
+  .content-layer{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; }
+</style>
+</head>
+<body>
+
+<main class="flyer">
+  <div class="content-layer">
+    <div class="ring" aria-hidden="true">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="33" r="10" fill="#F2C94C"/><path d="M18,58 C30,48 70,48 82,58 L82,85 C70,93 30,93 18,85 Z" fill="#2FA8A3"/></svg>
+    </div>
+
+    <p class="eyebrow">Manzanillo del Mar &middot; Cartagena</p>
+    <h1>Hermanos<br>Tatis</h1>
+    <p class="location">Restaurante frente al mar</p>
+
+    <p class="cta">¡Déjanos tu reseña!</p>
+    <p class="sub">Escanea el código con la cámara de tu celular para calificarnos en Google.</p>
+
+    <div class="qr-card">
+      <div id="qrcode"></div>
+    </div>
+
+    <p class="stars" aria-hidden="true">★★★★★</p>
+  </div>
+
+  <div class="waves" aria-hidden="true">
+    <svg viewBox="0 0 720 100" preserveAspectRatio="none">
+      <path d="M0,55 Q60,30 120,55 T240,55 T360,55 T480,55 T600,55 T720,55 V100 H0 Z" fill="#2FA8A3" opacity="0.5"/>
+      <path d="M0,75 Q60,55 120,75 T240,75 T360,75 T480,75 T600,75 T720,75 V100 H0 Z" fill="#0F3B3D"/>
+    </svg>
+  </div>
+</main>
+
+<script>
+  // Points to a Google Maps search for the business name, which should surface
+  // the review page since the name is distinctive. For a guaranteed direct link,
+  // replace REVIEW_URL with the short review link from your Google Business Profile
+  // ("Ask for reviews" button) — then reload this page to regenerate the code.
+  var REVIEW_URL = "https://www.google.com/maps/search/?api=1&query=Restaurante+Hermanos+Tatis+Manzanillo+del+Mar+Cartagena";
+
+  new QRCode(document.getElementById("qrcode"), {
+    text: REVIEW_URL,
+    width: 200,
+    height: 200,
+    colorDark: "#0B4A4E",
+    colorLight: "#F2E6C9",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+
+</body>
+</html>
